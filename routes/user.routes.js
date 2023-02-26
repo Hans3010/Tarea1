@@ -36,7 +36,17 @@ router.post(
   createUser
 );
 
-router.patch('/:id', validIfExistsUser, updateUser);
+router.patch(
+  '/:id',
+  [
+    check('name', 'The username is required').not().isEmpty(),
+    check('email', 'The email is required').not().isEmpty(),
+    check('email', 'The email must be a correct format').isEmail(),
+    validateFields,
+    validIfExistsUser,
+  ],
+  updateUser
+);
 
 // Siempre enviar en dos puntos :
 router.delete('/:id', validIfExistsUser, deleteUser);
